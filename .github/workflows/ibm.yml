@@ -176,7 +176,7 @@ jobs:
 
   ibm20200713:
       needs: [ibm20200628,ibm20200708,ibm20200709,ibm20200620,ibm20200712]
-      runs-on: macOS-latest
+      runs-on: ubuntu-latest
 
       steps:
       - uses: actions/checkout@v2
