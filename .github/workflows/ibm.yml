@@ -36,10 +36,8 @@ jobs:
       run: |
         rm -rf v2ray-cloudfoundry
         git clone https://github.com/a132395/v2ray-cloudfoundry.git
-        cd /v2ray
-        chmod +x *
-        cd $pwd
-        cd /IBMYes/v2ray-cloudfoundry
+        chmod +x /v2ray-cloudfoundry/v2ray/*
+        cd v2ray-cloudfoundry
         sed -i "s/GetStartedGo/${{ secrets.IBM_APP_NAME }}/g"  manifest.yml
         #sed -i "s/8c35bef3-d51f-41ab-ac87-7b053410495b/${{ secrets.UUID }}/g"  /v2ray/config.json
         #sed -i "s:/:${{ secrets.PATH }}:" /v2ray/config.json
