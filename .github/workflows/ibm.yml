@@ -18,12 +18,14 @@ jobs:
 
     - name: Init
       run: |
+        pwd
         chmod -R 777 ./IBM_Cloud_CLI/
     - name: Login IBM Cloud
       env:
         IBM_ACCOUNT: ${{ secrets.IBM_ACCOUNT }}
         REGION_NUM: ${{ secrets.REGION_NUM }}
       run: |
+        pwd
         ./IBM_Cloud_CLI/ibmcloud login <<EOF
         $IBM_ACCOUNT
         $REGION_NUM
@@ -33,6 +35,7 @@ jobs:
       env:
         IBM_APP_NAME: ${{ secrets.IBM_APP_NAME }}
       run: |
+        pwd
         rm -rf v2ray-cloudfoundry
         git clone https://github.com/a132395/v2ray-cloudfoundry.git
         chmod +x v2ray-cloudfoundry/v2ray/*
@@ -47,6 +50,7 @@ jobs:
        IBM_APP_NAME: ${{ secrets.IBM_APP_NAME }}      
        RESOURSE_ID: ${{ secrets.RESOURSE_ID }}
       run: |
+        pwd
         #./IBM_Cloud_CLI/ibmcloud target -r eu-gb
         ./IBM_Cloud_CLI/ibmcloud target -g "$RESOURSE_ID"
         ./IBM_Cloud_CLI/ibmcloud target --cf
