@@ -51,7 +51,7 @@ jobs:
         ./IBM_Cloud_CLI/ibmcloud target -g "$RESOURSE_ID"
         ./IBM_Cloud_CLI/ibmcloud target --cf
         ./IBM_Cloud_CLI/ibmcloud cf install
-        ./IBM_Cloud_CLI/ibmcloud cf push $IBM_APP_NAME -f v2ray-cloudfoundry/manifest-ibm.yml
+        ./IBM_Cloud_CLI/ibmcloud cf push $IBM_APP_NAME -f v2ray-cloudfoundry/manifest.yml
 
 
 
