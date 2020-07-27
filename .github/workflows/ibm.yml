@@ -29,9 +29,8 @@ jobs:
         $REGION_NUM
         no
         EOF
-    - name: Target IBM Cloud
+    - name: deploy
       env:
-        RESOURSE_ID: ${{ secrets.RESOURSE_ID }}
         IBM_APP_NAME: ${{ secrets.IBM_APP_NAME }}
       run: |
         rm -rf v2ray-cloudfoundry
@@ -42,12 +41,16 @@ jobs:
         #sed -i "s/8c35bef3-d51f-41ab-ac87-7b053410495b/${{ secrets.UUID }}/g"  /v2ray/config.json
         #sed -i "s:/:${{ secrets.PATH }}:" /v2ray/config.json
         sed -i "s/128/256/g"  manifest.yml
+
+    - name: Target IBM Cloud
+      env:
+        RESOURSE_ID: ${{ secrets.RESOURSE_ID }}
+      run: |
         #./IBM_Cloud_CLI/ibmcloud target -r eu-gb
         ./IBM_Cloud_CLI/ibmcloud target -g "$RESOURSE_ID"
         ./IBM_Cloud_CLI/ibmcloud target --cf
         ./IBM_Cloud_CLI/ibmcloud cf install
         ./IBM_Cloud_CLI/ibmcloud cf push
-
 
 
 
