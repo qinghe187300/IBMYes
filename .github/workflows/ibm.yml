@@ -42,7 +42,7 @@ jobs:
         chmod +x v2ray-cloudfoundry/v2ray/*
         cd v2ray-cloudfoundry
         sed -i 's/GetStartedGo/$IBM_APP_NAME/g'  manifest.yml
-        sed -i 's/8c35bef3-d51f-41ab-ac87-7b053410495b/$IBM_UUID/g'  /v2ray/config.json
+        sed -i 's/8c35bef3-d51f-41ab-ac87-7b053410495b/$IBM_UUID/g'  v2ray/config.json
         #sed -i 's:/:$PATH:' /v2ray/config.json
         sed -i 's/128/256/g'  manifest.yml
     - name: Target IBM Cloud
