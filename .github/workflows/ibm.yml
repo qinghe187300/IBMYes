@@ -33,62 +33,16 @@ jobs:
     - name: deploy
       env:
         IBM_APP_NAME: ${{ secrets.IBM_APP_NAME3 }}
-        IBM_UUID: ${{ secrets.UUID3 }}
-        IBM_PATH: ${{ secrets.PATH3 }}
       run: |
         pwd
         rm -rf v2ray-cloudfoundry
-		      mikdir v2ray-cloudfoundry
-		      cd v2ray-cloudfoundry
-		
-        cat > manifest-ibm.yml << EOF
-        ---
-        applications:
-        - path: .
-          name: $IBM_APP_NAME
-          random-route: true
-          memory: 256M
-          buildpacks:
-          - binary_buildpack
-         EOF
-		
-         mikdir v2ray
-         cd v2ray
-         wget -q https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip
-         unzip -o v2ray-linux-64.zip "v2ray" "v2ctl" "geosite.dat" "geoip.dat" 
-         rm -rf v2ray-linux-64.zip
-         chmod 700 v2ray v2ctl
-
-         cat > config.json << EOF
-         {
-           "inbounds": [
-             {
-               "port": 8080,
-               "protocol": "vmess",
-               "settings": {
-                 "clients": [
-                   {
-                     "id": "$IBM_UUID",
-                     "alterId": 64
-                   }
-                 ]
-               },
-               "streamSettings": {
-                 "network":"ws",
-                 "wsSettings": {
-                 "path": "$IBM_PATH"
-               }
-             }
-           ],
-           "outbounds": [
-             {
-               "protocol": "freedom",
-               "settings": {}
-             }
-           ]
-         }
-         EOF
-
+        git clone https://github.com/a132395/v2ray-cloudfoundry.git
+        chmod +x v2ray-cloudfoundry/v2ray/*
+        cd v2ray-cloudfoundry
+        sed -i 's/GetStartedGo/$IBM_APP_NAME/g'  manifest.yml
+        #sed -i 's/8c35bef3-d51f-41ab-ac87-7b053410495b/${{ secrets.UUID }}/g'  /v2ray/config.json
+        #sed -i 's:/:${{ secrets.PATH }}:' /v2ray/config.json
+        sed -i 's/128/256/g'  manifest.yml
     - name: Target IBM Cloud
       env:
        IBM_APP_NAME: ${{ secrets.IBM_APP_NAME3 }}      
@@ -101,23 +55,96 @@ jobs:
         ./IBM_Cloud_CLI/ibmcloud cf install
         ./IBM_Cloud_CLI/ibmcloud cf push "$IBM_APP_NAME" -f v2ray-cloudfoundry/manifest.yml
         
+  ibm20200628:
+    needs: ibm20200620
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Init
+      run: |
+        pwd
+        chmod -R 777 ./IBM_Cloud_CLI/
+    - name: Login IBM Cloud
+      env:
+        IBM_ACCOUNT: ${{ secrets.IBM_ACCOUNT }}
+        REGION_NUM: ${{ secrets.REGION_NUM }}
+      run: |
+        pwd
+        ./IBM_Cloud_CLI/ibmcloud login <<EOF
+        $IBM_ACCOUNT
+        $REGION_NUM
+        no
+        EOF
+    - name: deploy
+      env:
+        IBM_APP_NAME: ${{ secrets.IBM_APP_NAME }}
+      run: |
+        pwd
+        rm -rf v2ray-cloudfoundry
+        git clone https://github.com/a132395/v2ray-cloudfoundry.git
+        chmod +x v2ray-cloudfoundry/v2ray/*
+        cd v2ray-cloudfoundry
+        sed -i 's/GetStartedGo/$IBM_APP_NAME/g'  manifest.yml
+        #sed -i 's/8c35bef3-d51f-41ab-ac87-7b053410495b/${{ secrets.UUID }}/g'  /v2ray/config.json
+        #sed -i 's:/:${{ secrets.PATH }}:' /v2ray/config.json
+        sed -i 's/128/256/g'  manifest.yml
+    - name: Target IBM Cloud
+      env:
+       IBM_APP_NAME: ${{ secrets.IBM_APP_NAME }}      
+       RESOURSE_ID: ${{ secrets.RESOURSE_ID }}
+      run: |
+        pwd
+        #./IBM_Cloud_CLI/ibmcloud target -r eu-gb
+        ./IBM_Cloud_CLI/ibmcloud target -g "$RESOURSE_ID"
+        ./IBM_Cloud_CLI/ibmcloud target --cf
+        ./IBM_Cloud_CLI/ibmcloud cf install
+        ./IBM_Cloud_CLI/ibmcloud cf push "$IBM_APP_NAME" -f v2ray-cloudfoundry/manifest.yml
         
+  ibm20200708:
+    needs: ibm20200628
+    runs-on: ubuntu-latest
 
+    steps:
+    - uses: actions/checkout@v2
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    - name: Init
+      run: |
+        pwd
+        chmod -R 777 ./IBM_Cloud_CLI/
+    - name: Login IBM Cloud
+      env:
+        IBM_ACCOUNT: ${{ secrets.IBM_ACCOUNT1 }}
+        REGION_NUM: ${{ secrets.REGION_NUM1 }}
+      run: |
+        pwd
+        ./IBM_Cloud_CLI/ibmcloud login <<EOF
+        $IBM_ACCOUNT
+        $REGION_NUM
+        no
+        EOF
+    - name: deploy
+      env:
+        IBM_APP_NAME: ${{ secrets.IBM_APP_NAME1 }}
+      run: |
+        pwd
+        rm -rf v2ray-cloudfoundry
+        git clone https://github.com/a132395/v2ray-cloudfoundry.git
+        chmod +x v2ray-cloudfoundry/v2ray/*
+        cd v2ray-cloudfoundry
+        sed -i 's/GetStartedGo/$IBM_APP_NAME/g'  manifest.yml
+        #sed -i 's/8c35bef3-d51f-41ab-ac87-7b053410495b/${{ secrets.UUID }}/g'  /v2ray/config.json
+        #sed -i 's:/:${{ secrets.PATH }}:' /v2ray/config.json
+        sed -i 's/128/256/g'  manifest.yml
+    - name: Target IBM Cloud
+      env:
+       IBM_APP_NAME: ${{ secrets.IBM_APP_NAME1 }}      
+       RESOURSE_ID: ${{ secrets.RESOURSE_ID1 }}
+      run: |
+        pwd
+        #./IBM_Cloud_CLI/ibmcloud target -r eu-gb
+        ./IBM_Cloud_CLI/ibmcloud target -g "$RESOURSE_ID"
+        ./IBM_Cloud_CLI/ibmcloud target --cf
+        ./IBM_Cloud_CLI/ibmcloud cf install
+        ./IBM_Cloud_CLI/ibmcloud cf push "$IBM_APP_NAME" -f v2ray-cloudfoundry/manifest.yml
