@@ -51,6 +51,8 @@ jobs:
        RESOURSE_ID: ${{ secrets.RESOURSE_ID3 }}
       run: |
         pwd
+        ./IBM_Cloud_CLI/ibmcloud -v
+        ./IBM_Cloud_CLI/ibmcloud update
         #./IBM_Cloud_CLI/ibmcloud target -r eu-gb
         ./IBM_Cloud_CLI/ibmcloud target -g "$RESOURSE_ID"
         ./IBM_Cloud_CLI/ibmcloud cf install
