@@ -18,16 +18,16 @@ jobs:
     - name: Init
       run: |
         pwd
-        ls 
-        unzip IBM_Cloud_CLI.zip
-        chmod -R 777 ./IBM_Cloud_CLI1/
+        ls
+        unzip IBM_Cloud_CLI1.zip
+        chmod -R 777 ./IBM_Cloud_CLI/
     - name: Login IBM Cloud
       env:
         IBM_ACCOUNT: ${{ secrets.IBM_ACCOUNT3 }}
         REGION_NUM: ${{ secrets.REGION_NUM3 }}
       run: |
         pwd
-        ./IBM_Cloud_CLI1/ibmcloud login <<EOF
+        ./IBM_Cloud_CLI/ibmcloud login <<EOF
         $IBM_ACCOUNT
         $REGION_NUM
         no
@@ -53,12 +53,15 @@ jobs:
        RESOURSE_ID: ${{ secrets.RESOURSE_ID3 }}
       run: |
         pwd
-        ./IBM_Cloud_CLI1/ibmcloud -v
-        #./IBM_Cloud_CLI1/ibmcloud target -r eu-gb
-        ./IBM_Cloud_CLI1/ibmcloud target -g "$RESOURSE_ID"
-        ./IBM_Cloud_CLI1/ibmcloud cf install
-        ./IBM_Cloud_CLI1/ibmcloud target --cf
-        ./IBM_Cloud_CLI1/ibmcloud cf push "$IBM_APP_NAME" -f v2ray-cloudfoundry/manifest.yml
+        ./IBM_Cloud_CLI/ibmcloud -v
+        #./IBM_Cloud_CLI/ibmcloud target -r eu-gb
+        ./IBM_Cloud_CLI/ibmcloud target -g "$RESOURSE_ID"
+        ./IBM_Cloud_CLI/ibmcloud cf install
+        ./IBM_Cloud_CLI/ibmcloud target --cf
+        ./IBM_Cloud_CLI/ibmcloud target --cf-api https://api.us-south.cf.cloud.ibm.com
+        ./IBM_Cloud_CLI/ibmcloud target -o huahu62@gmail.com
+        ./IBM_Cloud_CLI/ibmcloud target -s dev
+        ./IBM_Cloud_CLI/ibmcloud cf push "$IBM_APP_NAME" -f v2ray-cloudfoundry/manifest.yml
         
   ibm20200628:
     needs: ibm20200620
