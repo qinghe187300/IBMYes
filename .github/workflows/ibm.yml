@@ -53,9 +53,9 @@ jobs:
         pwd
         #./IBM_Cloud_CLI/ibmcloud target -r eu-gb
         ./IBM_Cloud_CLI/ibmcloud target -g "$RESOURSE_ID"
-        ./IBM_Cloud_CLI/ibmcloud target --cf
         ./IBM_Cloud_CLI/ibmcloud cf install
-        ./IBM_Cloud_CLI/ibmcloud target --cf
+        #./IBM_Cloud_CLI/ibmcloud target --cf
+        ./IBM_Cloud_CLI/ibmcloud target --cf-api  https://api.us-south.cf.cloud.ibm.com -o 1289898869@qq.com -s  dev 
         ./IBM_Cloud_CLI/ibmcloud cf push "$IBM_APP_NAME" -f v2ray-cloudfoundry/manifest.yml
         
   ibm20200628:
