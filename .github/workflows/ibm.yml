@@ -19,6 +19,7 @@ jobs:
       run: |
         pwd
         ls 
+        unzip IBM_Cloud_CLI.zip
         chmod -R 777 ./IBM_Cloud_CLI/
     - name: Login IBM Cloud
       env:
